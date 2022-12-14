@@ -7,8 +7,8 @@ extern const double motorToFlywheel;    // the gear ratio from the motor to the 
 
 extern void aim_shot(vector *pCenter);
 extern const unsigned turn_roller(const int rate);
+extern void setupFlywheel(void *param);
 extern void regulateFlywheel(void *param);
-extern void regulateFlywheel_2(void *param);
-extern void shoot(const unsigned gateDelay = 1000);
+extern void shoot(double desiredSpeed, const unsigned numDiscs);
 
 #endif

@@ -58,6 +58,16 @@ void aim_shot(vector *pCenter) {
     pCenter->heading = get_heading();
 }
 
+void setupFlywheel(void *param) {
+    unsigned desiredSpeed = *static_cast<unsigned*>(param);
+    flywheel = 127;
+    while (std::abs(flywheel.get_actual_velocity()) * motorToFlywheel < desiredSpeed)
+    {
+        pros::delay(15);
+    }
+    *static_cast<unsigned*>(param) = INT16_MAX;
+}
+
 /** Regulates the flywheel voltage 
  * using PID to meet the desired RPM
  * 
@@ -66,43 +76,30 @@ void aim_shot(vector *pCenter) {
 void regulateFlywheel(void *param) {
     unsigned desiredSpeed = *static_cast<unsigned*>(param); double currSpeed = 0;
     int prevError = 0, integral = 0;
-    flywheel = 127;
-    while (std::abs(flywheel.get_actual_velocity()) * motorToFlywheel < desiredSpeed)
-    {
-        pros::delay(15);
-    }
-    *static_cast<unsigned*>(param) = INT16_MAX;
     while (true) {
         desiredSpeed = *static_cast<unsigned*>(param);
-        //master.print(0, 0, "%f", currSpeed);
         currSpeed = std::abs(flywheel.get_actual_velocity()) * motorToFlywheel;
         flywheel = 113+PID(currSpeed, desiredSpeed, 0.34, 0.06, 0.12, prevError, integral);
         pros::delay(35);
     }
 }
-void regulateFlywheel_2(void *param) {
-    unsigned desiredSpeed = *static_cast<unsigned*>(param); double currSpeed = 0;
-    int prevError = 0, integral = 0;
-    flywheel = 127;
-    pros::delay(1700);
-    *static_cast<unsigned*>(param) = INT16_MAX;
-    while (true) {
-        desiredSpeed = *static_cast<unsigned*>(param);
-        //master.print(0, 0, "%f", currSpeed);
-        currSpeed = std::abs(flywheel.get_actual_velocity()) * motorToFlywheel;
-        flywheel = 113+PID(currSpeed, desiredSpeed, 0.335, 0.06, 0.12, prevError, integral);
-        pros::delay(35);
-    }
-}
 
-/** Unlocks the gate to fire the discs in posession
- * and then closes the gate
+/** Shoots the discs for a piston indexer flywheel
  * 
- * @param gateDelay the number of milliseconds to open the gate for
+ * @param desiredSpeed the desiredSpeed for the flywheel to run at
+ * @param numDiscs the number of discs to be shot out
 */
-void shoot(const unsigned gateDelay) {
-    flywheel_piston.set_value(1);
-    indexer = 109;
-    pros::delay(gateDelay); 
-    flywheel_piston.set_value(0);
+void shoot(double desiredSpeed, const unsigned numDiscs) {
+    double currSpeed = 0;
+    int prevError, integral = 0;
+    for (int i = 0; i < numDiscs; ++i) {
+        while (true) {
+            currSpeed = std::abs(flywheel.get_actual_velocity()) * motorToFlywheel;
+            flywheel = 113+PID(currSpeed, desiredSpeed, 0.34, 0.06, 0.12, prevError, integral);
+            pros::delay(15);
+        }
+        flywheel_piston.set_value(1);
+        pros::delay(200);
+        flywheel_piston.set_value(0);
+    }
 }

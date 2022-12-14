@@ -12,7 +12,8 @@ void far_auto() {
     vector center = {};
     unsigned timeElapsed = 0;
     unsigned desiredSpeed = 2770;
-    pros::Task regulate_shooting_speed(regulateFlywheel, &desiredSpeed);
+
+    pros::Task setupFlywheelSpeed(setupFlywheel, &desiredSpeed);
     pros::Task track_time(stopwatch, &timeElapsed);
 
     setup_robot();
@@ -30,11 +31,12 @@ void far_auto() {
     while (desiredSpeed != INT16_MAX) {
         delay(15);
     }
-    desiredSpeed = 2770;
+    desiredSpeed = 2770; setupFlywheelSpeed.remove();
     delay(850);
     shoot(700);
     move_straight(5.0, 60.0,&center);
     desiredSpeed = 2600;
+    Task changeFlywheelSpeed(regulateFlywheel, &desiredSpeed);
 
     // pick up row of 3 discs
     intake = 127;
@@ -42,6 +44,7 @@ void far_auto() {
     move_straight(69.3, 59.0, &center);
     turn(-29,29,150,&center);
     delay(50);
+    changeFlywheelSpeed.suspend();
     shoot(800);
     // desiredSpeed = 2600;
     // move_straight(1, 61.0, &center);
@@ -56,7 +59,6 @@ void far_auto() {
 
     // cleanup program
     track_time.remove();
-    regulate_shooting_speed.remove();
     track_position.remove();
     master.print(0, 0, "%d", timeElapsed);
  }
