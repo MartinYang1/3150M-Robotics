@@ -4,27 +4,26 @@
 pros::Controller master(pros::E_CONTROLLER_MASTER);
 
 // drive train
-pros::Motor leftFrontMotor(2, MOTOR_GEAR_BLUE,1);
-pros::Motor rightFrontMotor(1, MOTOR_GEAR_BLUE, 0);
-pros::Motor leftBackMotor(3, MOTOR_GEAR_BLUE, 1);
-pros::Motor rightBackMotor(5, MOTOR_GEAR_BLUE, 0);
-pros::Motor leftMidMotor(4, MOTOR_GEAR_BLUE,1); 
-pros::Motor rightMidMotor(6, MOTOR_GEAR_BLUE, 0); 
+pros::Motor leftFrontMotor(1, MOTOR_GEAR_BLUE);
+pros::Motor rightFrontMotor(2, MOTOR_GEAR_BLUE);
+pros::Motor leftBackMotor(3, MOTOR_GEAR_BLUE);
+pros::Motor rightBackMotor(4, MOTOR_GEAR_BLUE);
+pros::Motor leftMidMotor(5, MOTOR_GEAR_BLUE, 1); 
+pros::Motor rightMidMotor(6, MOTOR_GEAR_BLUE, 1); 
 
 // disc mechanisms
-pros::Motor intake(7);
+pros::Motor intake(10);
 pros::Motor &roller = intake;
-pros::Motor &indexer = intake;  // the flex wheel indexer for the shooter
-pros::Motor flywheel(18, MOTOR_GEAR_RED, 1);  
+pros::Motor flywheel(21, MOTOR_GEAR_RED, 1);  
 
 // sensors
 pros::Vision vision_sensor(19);
-pros::Imu imu_sensor(12);
+pros::Imu imu_sensor(11);
 pros::Optical optical_sensor(20);
 
 // pneumatics pistons
 pros::ADIDigitalOut expander1_piston(8);
 pros::ADIDigitalOut expander2_piston(3);
-pros::ADIDigitalOut flywheel_piston(6);  // the gate for the flywheel
+pros::ADIDigitalOut flywheel_indexer(6);
 
 int autonSelection = SKILLS; // default auton selected

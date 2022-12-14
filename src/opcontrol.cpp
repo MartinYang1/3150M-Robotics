@@ -33,10 +33,7 @@ void opcontrol() {
 		if (master.get_digital(DIGITAL_R2) )
  {
 			flywheel_piston.set_value(1);
-			intake=127;
-		}
-		else
-		{
+			pros::delay(200);
 			flywheel_piston.set_value(0);
 		}
 		if (master.get_digital(DIGITAL_R1))
