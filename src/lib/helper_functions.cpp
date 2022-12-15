@@ -17,7 +17,7 @@ const double robotWidth = 12;
 
 inline void reset_drive_train() {
     leftBackMotor.tare_position(); leftMidMotor.tare_position(); rightBackMotor.tare_position();
-    leftFrontMotor.tare_position(); rightMidMotor.tare_position();; rightFrontMotor.tare_position();
+    leftFrontMotor.tare_position(); rightMidMotor.tare_position(); rightFrontMotor.tare_position();
 }
 
 /** Setups the robot for autonomous by resetting motors and sensors

@@ -26,7 +26,7 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	flywheel_piston.set_value(0);
+	flywheel_indexer.set_value(0);
 	imu_sensor.reset();
 	pros::lcd::register_btn1_cb(on_center_button);
 	selectorInit();
@@ -38,8 +38,7 @@ void initialize() {
  * the robot is enabled, this task will exit.
  */
 void disabled() {
-	flywheel_piston.set_value(0);
-	
+	flywheel_indexer.set_value(0);	
 }
 
 /**
@@ -52,7 +51,7 @@ void disabled() {
  * starts.
  */
 void competition_initialize() {
-	flywheel_piston.set_value(0);
+	flywheel_indexer.set_value(0);
 	imu_sensor.reset();
 }
 

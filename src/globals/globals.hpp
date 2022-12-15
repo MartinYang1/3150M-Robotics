@@ -29,7 +29,7 @@ extern pros::Optical optical_sensor;
 // pneumatics
 extern pros::ADIDigitalOut expander1_piston;
 extern pros::ADIDigitalOut expander2_piston;
-extern pros::ADIDigitalOut flywheel_piston;
+extern pros::ADIDigitalOut flywheel_indexer;
 
 extern int autonSelection;
 

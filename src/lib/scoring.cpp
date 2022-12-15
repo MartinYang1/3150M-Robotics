@@ -20,7 +20,12 @@ const unsigned turn_roller(const int rate) {
     unsigned short currHue = optical_sensor.get_hue();
     
     unsigned timeElapsed = 0;
-    while ((currHue - 10 <= optical_sensor.get_hue() && optical_sensor.get_hue() <= currHue + 10) && timeElapsed < 3300) {
+    // while ((currHue - 10 <= optical_sensor.get_hue() && optical_sensor.get_hue() <= currHue + 10) && timeElapsed < 3300) {
+    //     roller = rate;
+    //     timeElapsed += 15;
+    //     pros::delay(15);
+    // }
+    while (timeElapsed < 800) {
         roller = rate;
         timeElapsed += 15;
         pros::delay(15);
@@ -98,8 +103,8 @@ void shoot(double desiredSpeed, const unsigned numDiscs) {
             flywheel = 113+PID(currSpeed, desiredSpeed, 0.34, 0.06, 0.12, prevError, integral);
             pros::delay(15);
         }
-        flywheel_piston.set_value(1);
-        pros::delay(200);
-        flywheel_piston.set_value(0);
+        flywheel_indexer.set_value(1);
+        pros::delay(150);
+        flywheel_indexer.set_value(0);
     }
 }

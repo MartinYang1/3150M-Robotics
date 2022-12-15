@@ -5,9 +5,9 @@
 #include "../lib/scoring.hpp"
 #include "pros/vision.h"
 
-using namespace pros;
+ using namespace pros;
 
-void far_auto() {
+ void far_auto() {
     // initial setup
     vector center = {};
     unsigned timeElapsed = 0;
@@ -23,7 +23,9 @@ void far_auto() {
     // turn roller
     move_straight(22.0, &center);
     turn(35, 0, 89, &center);
-    move_straight(51, &center); turn_roller(100); delay(100);
+    move_straight(0.6, 51);
+    //move_straight(51, &center); 
+    turn_roller(100); delay(100);
     
     // shoot preloads
     move_straight(-4.0, &center);
@@ -33,7 +35,7 @@ void far_auto() {
     }
     desiredSpeed = 2770; setupFlywheelSpeed.remove();
     delay(850);
-    shoot(700);
+    shoot(2770, 2);
     move_straight(5.0, 60.0,&center);
     desiredSpeed = 2600;
     Task changeFlywheelSpeed(regulateFlywheel, &desiredSpeed);
@@ -45,7 +47,7 @@ void far_auto() {
     turn(-29,29,150,&center);
     delay(50);
     changeFlywheelSpeed.suspend();
-    shoot(800);
+    shoot(2600, 3);
     // desiredSpeed = 2600;
     // move_straight(1, 61.0, &center);
     // turn(-29,29,90,&center);
@@ -61,4 +63,4 @@ void far_auto() {
     track_time.remove();
     track_position.remove();
     master.print(0, 0, "%d", timeElapsed);
- }
+  }
