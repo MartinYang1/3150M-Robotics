@@ -29,7 +29,7 @@ void move(const int leftVolt, const int rightVolt){
  * @param desiredAngle in degrees in the interval (0, 360]
  * @param pCenter the pointer to the vector data structure for the robot
  */
-void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, vector *pCentre) {
+void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, bool correct, vector *pCentre) {
     int prevErrorHeading = 0, integralHeading = 0;
     pCentre->desiredHeading = desiredAngle;
     double currAngle = imu_sensor.get_heading();
@@ -92,12 +92,14 @@ void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, 
         }
     }
     move(MOTOR_BRAKE_BRAKE, MOTOR_BRAKE_BRAKE);
+    if (correct) {
+        turn(baseLeftVolt*0.8, baseRightVolt*0.8, desiredAngle, False, pCenter)
+    }
     pros::delay(100);
     pCentre->heading = imu_sensor.get_heading(); 
 }
 
-/** Moves the robot a given distance forwards or backwards
- * 
+/**
  * @param desiredDist the distance to travel, in inches
  * @param pCenter the pointer to the vector data structure for the robot
  * @param stopType the type of brake mechanism the robot uses
