@@ -29,7 +29,7 @@ void move(const int leftVolt, const int rightVolt){
  * @param desiredAngle in degrees in the interval (0, 360]
  * @param pCenter the pointer to the vector data structure for the robot
  */
-void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, bool correct, vector *pCentre) {
+void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, vector *pCentre, bool correct) {
     int prevErrorHeading = 0, integralHeading = 0;
     pCentre->desiredHeading = desiredAngle;
     double currAngle = imu_sensor.get_heading();
@@ -38,8 +38,8 @@ void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, 
         if (currAngle < desiredAngle) {
             while (currAngle < desiredAngle) { 
                 currAngle = imu_sensor.get_heading();         
-                move(baseLeftVolt + PID(currAngle, desiredAngle, 0.5, 0, 0, prevErrorHeading, integralHeading), 
-                        baseRightVolt - PID(currAngle, desiredAngle, 0.5, 0, 0, prevErrorHeading, integralHeading));
+                move(baseLeftVolt + PID(currAngle, desiredAngle, 0.6, 0, 0, prevErrorHeading, integralHeading), 
+                        baseRightVolt - PID(currAngle, desiredAngle, 0.6, 0, 0, prevErrorHeading, integralHeading));
                 
                 pros::delay(15);
             }
@@ -53,8 +53,8 @@ void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, 
                     prevAngle = imu_sensor.get_heading();
                 currAngle += imu_sensor.get_heading() - prevAngle;
                 
-                move(baseLeftVolt + PID(currAngle, desiredAngle, 0.5, 0, 0, prevErrorHeading, integralHeading), 
-                        baseRightVolt - PID(currAngle, desiredAngle, 0.5, 0, 0, prevErrorHeading, integralHeading));
+                move(baseLeftVolt + PID(currAngle, desiredAngle, 0.6, 0, 0, prevErrorHeading, integralHeading), 
+                        baseRightVolt - PID(currAngle, desiredAngle, 0.6, 0, 0, prevErrorHeading, integralHeading));
                 
                 prevAngle = imu_sensor.get_heading();  
                 pros::delay(15);
@@ -91,10 +91,11 @@ void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, 
             }
         }
     }
-    move(MOTOR_BRAKE_BRAKE, MOTOR_BRAKE_BRAKE);
     if (correct) {
-        turn(baseLeftVolt*0.8, baseRightVolt*0.8, desiredAngle, False, pCenter)
+        std::cout << imu_sensor.get_heading() << std::endl;
+        turn(-baseLeftVolt*0.5, -baseRightVolt*0.5, desiredAngle, pCentre, false);
     }
+    move(MOTOR_BRAKE_BRAKE, MOTOR_BRAKE_BRAKE);
     pros::delay(100);
     pCentre->heading = imu_sensor.get_heading(); 
 }
@@ -115,11 +116,11 @@ void move_straight(const double desiredDist, vector *pCenter, decltype(MOTOR_BRA
         const double volt = (desiredDist < 0) ? PID(currDist, desiredDist, 2, 0, -0.2, prevErrorDist, integralDist) - baseVolt
                                             : PID(currDist, desiredDist, 2, 0, -0.2, prevErrorDist, integralDist) + baseVolt;
         if (pCenter->desiredHeading > 180)
-            move(volt + PID(get_heading(), pCenter->desiredHeading-360, 0.9, 0.01, 1, prevErrorHeading, integralHeading), 
-                volt - PID(get_heading(), pCenter->desiredHeading-360, 0.9, 0.01, 1, prevErrorHeading, integralHeading));
+            move(volt + PID(get_heading(), pCenter->desiredHeading-360, 1.5, 0.01, 2, prevErrorHeading, integralHeading), 
+                volt - PID(get_heading(), pCenter->desiredHeading-360, 1.5, 0.01, 2, prevErrorHeading, integralHeading));
         else
-            move(volt + PID(get_heading(), pCenter->desiredHeading, 0.9, 0.01, 1, prevErrorHeading, integralHeading), 
-                volt - PID(get_heading(), pCenter->desiredHeading, 0.9, 0.01, 1, prevErrorHeading, integralHeading));
+            move(volt + PID(get_heading(), pCenter->desiredHeading, 1.5, 0.01, 2, prevErrorHeading, integralHeading), 
+                volt - PID(get_heading(), pCenter->desiredHeading, 1.5, 0.01, 2, prevErrorHeading, integralHeading));
 
         currDist += (leftMidMotor.get_position()-prevLeftPos + rightMidMotor.get_position()-prevRightPos)/2 
                     * motorToWheelRatio/360*(M_PI*wheelDiam);

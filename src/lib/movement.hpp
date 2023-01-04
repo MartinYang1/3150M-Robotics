@@ -15,6 +15,6 @@ extern void move_straight(const double desiredDist, const int volt, vector *pCen
 extern void move_straight(const float time, const int volt);
 extern void move_straight(const int volt, vector *pCenter);
 
-extern void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, vector *pCentre);
+extern void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, vector *pCentre, bool correct = true);
 
 #endif

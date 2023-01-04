@@ -138,21 +138,21 @@ void odometry2(void* param) {
     }
 }
 
-void odometry(void* param) {
-    vector *pCenter = static_cast<vector*>(param);
-    double C, deltaX, deltaY, alpha;
-    while (true) {
-        C = centerMotor.get_position() = motorToWheelRatio/360 * (M_PI*wheelDiam);
+// void odometry(void* param) {
+//     vector *pCenter = static_cast<vector*>(param);
+//     double C, deltaX, deltaY, alpha;
+//     while (true) {
+//         C = centerMotor.get_position() = motorToWheelRatio/360 * (M_PI*wheelDiam);
 
-        // the angle turned
-        alpha = pCenter-> heading;
+//         // the angle turned
+//         alpha = pCenter-> heading;
 
-        deltaY = C * sin(pCenter->heading + alpha/2) - pCenter->y;
-        deltaX = C * cos(pCenter->heading + alpha/2) - pCenter->x;
+//         deltaY = C * sin(pCenter->heading + alpha/2) - pCenter->y;
+//         deltaX = C * cos(pCenter->heading + alpha/2) - pCenter->x;
 
-        pCenter->x += deltaX; pCenter->y += deltaY;
-        std::cout << pCenter->x << "\t" << pCenter->y;
+//         pCenter->x += deltaX; pCenter->y += deltaY;
+//         std::cout << pCenter->x << "\t" << pCenter->y;
 
-        pros::delay(10);
-    }
-}
+//         pros::delay(10);
+//     }
+// }
