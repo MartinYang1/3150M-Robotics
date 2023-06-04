@@ -116,8 +116,8 @@ void odometry2(void* param) {
     vector *pCenter = static_cast<vector*>(param);
     double L, R, deltaX, deltaY, alpha, hypotenuse;
     while (true) {
-        L = leftFrontMotor.get_position() * motorToWheelRatio / 360 * (M_PI*wheelDiam);
-        R = rightFrontMotor.get_position() * motorToWheelRatio / 360 * (M_PI*wheelDiam);
+        L = leftBackMotor.get_position() * motorToWheelRatio / 360 * (M_PI*wheelDiam);
+        R = rightBackMotor.get_position() * motorToWheelRatio / 360 * (M_PI*wheelDiam);
         if (L==R) {
             deltaY = L * cos(pCenter->heading) - pCenter->y; deltaX = R * sin(pCenter->heading)-pCenter->x;
             pCenter->x += deltaX; pCenter->y += deltaY;

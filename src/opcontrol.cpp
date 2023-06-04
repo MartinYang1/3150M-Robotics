@@ -3,8 +3,11 @@
 #include "pros/misc.h"
 #include "lib/movement.hpp"
 #include "lib/scoring.hpp"
+#include "lib/helper_functions.hpp"
 
 void opcontrol() {
+         vector center = {};
+          pros::Task track_position(odometry2, &center);
     unsigned shootingSpeed = 2000;
     pros::Task changeFlywheelSpeed(regulateFlywheel, &shootingSpeed);
 
@@ -55,4 +58,5 @@ void opcontrol() {
         }
 
     }
+    track_position.remove();
 }

@@ -105,16 +105,18 @@ void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, 
  * @param pCenter the pointer to the vector data structure for the robot
  * @param stopType the type of brake mechanism the robot uses
  */
-void move_straight(const double desiredDist, vector *pCenter, decltype(MOTOR_BRAKE_BRAKE) stopType) {
-    const unsigned baseVolt = 30;
+void move_straight(const double desiredDist, const double desiredVolt, vector *pCenter, decltype(MOTOR_BRAKE_BRAKE) stopType) {
     double prevLeftPos = leftMidMotor.get_position(), prevRightPos = rightMidMotor.get_position();   // the previous motor encoder value of each side of the drive train
     double currDist = 0;
     
     int prevErrorDist = 0, integralDist = 0;
     int prevErrorHeading = 0, integralHeading = 0;
+
+    double currVolt = 0;
     while (abs(currDist) < abs(desiredDist)) {
-        const double volt = (desiredDist < 0) ? PID(currDist, desiredDist, 2, 0, -0.2, prevErrorDist, integralDist) - baseVolt
-                                            : PID(currDist, desiredDist, 2, 0, -0.2, prevErrorDist, integralDist) + baseVolt;
+        if (abs(currDist) < abs(desiredDist) / 4)
+            currVolt += 6;
+        
         if (pCenter->desiredHeading > 180)
             move(volt + PID(get_heading(), pCenter->desiredHeading-360, 1.5, 0.01, 2, prevErrorHeading, integralHeading), 
                 volt - PID(get_heading(), pCenter->desiredHeading-360, 1.5, 0.01, 2, prevErrorHeading, integralHeading));
@@ -134,6 +136,7 @@ void move_straight(const double desiredDist, vector *pCenter, decltype(MOTOR_BRA
     pCenter->heading = imu_sensor.get_heading();
 }
 
+// move at a constant speed
 void move_straight(const double desiredDist, const int volt, vector *pCenter, decltype(MOTOR_BRAKE_BRAKE) stopType) {
     double prevLeftPos = leftMidMotor.get_position(), prevRightPos = rightMidMotor.get_position();   // the previous motor encoder value of each side of the drive train
     double currDist = 0;
@@ -174,25 +177,4 @@ void move_straight(const float time, const int volt) {
     }
     track_time.remove();
     move(MOTOR_BRAKE_HOLD, MOTOR_BRAKE_HOLD);
-}
-
-/** Moves the robot forwards until the light sensor
- * detects the roller.
- * 
- * @param volt the voltage for the motors, from -127 to 127
- */
-void move_straight(const int volt, vector* pCenter) {
-    int prevErrorHeading = 0, integralHeading = 0;
-    while (optical_sensor.get_proximity() < 255) {
-        if (pCenter->desiredHeading > 180)
-            move(volt + PID(get_heading(), pCenter->desiredHeading-360, 0.9, 0.01, 1, prevErrorHeading, integralHeading), 
-                volt - PID(get_heading(), pCenter->desiredHeading-360, 0.9, 0.01, 1, prevErrorHeading, integralHeading));
-        else
-            move(volt + PID(get_heading(), pCenter->desiredHeading, 0.9, 0.01, 1, prevErrorHeading, integralHeading), 
-                volt - PID(get_heading(), pCenter->desiredHeading, 0.9, 0.01, 1, prevErrorHeading, integralHeading));
-        pros::delay(15);
-    }
-    move(MOTOR_BRAKE_HOLD, MOTOR_BRAKE_HOLD);
-    pros::delay(100);
-    pCenter->heading = imu_sensor.get_heading();
 }

@@ -10,8 +10,13 @@ using namespace pros;
  void test() {
 //     // initial setup
      vector center = {};
+          pros::Task track_position(odometry2, &center);
+
      //move(50, 50);
      turn(-40, 40, 270, &center, false);
-     move_straight(30.0, &center);
-     //turn(20, -20, 270, &center);
+     std::cout << "Hi";
+     turn(20, -20, 270, &center);
+     track_position.remove();
+
+
  }
