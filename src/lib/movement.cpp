@@ -112,10 +112,15 @@ void move_straight(const double desiredDist, const double desiredVolt, vector *p
     int prevErrorDist = 0, integralDist = 0;
     int prevErrorHeading = 0, integralHeading = 0;
 
-    double currVolt = 0;
+    double startingVolt = get_move_voltage();
+    double currVolt = startingVolt;
     while (abs(currDist) < abs(desiredDist)) {
         if (abs(currDist) < abs(desiredDist) / 4)
-            currVolt += 6;
+            currVolt += (desiredVolt - startingVolt) / (abs(desiredDist) / 4);
+        else if (abs(currDist) < abs(desiredDist) * 3/4)
+            currVolt = currVolt;
+        else
+            currVolt -= (desiredVolt - startingVolt) / (abs(desiredDist) / 4)
         
         if (pCenter->desiredHeading > 180)
             move(volt + PID(get_heading(), pCenter->desiredHeading-360, 1.5, 0.01, 2, prevErrorHeading, integralHeading), 
