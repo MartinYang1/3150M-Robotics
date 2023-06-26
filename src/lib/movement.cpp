@@ -93,7 +93,7 @@ void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, 
     }
     if (correct) {
         std::cout << imu_sensor.get_heading() << std::endl;
-        turn(-baseLeftVolt*0.5, -baseRightVolt*0.5, desiredAngle, pCentre, false);
+        turn(-baseLeftVolt*0.5, -baseRightVolt*0.5, pCentre->desiredHeading, pCentre, false);
     }
     move(MOTOR_BRAKE_BRAKE, MOTOR_BRAKE_BRAKE);
     pros::delay(100);
@@ -114,31 +114,36 @@ void move_straight(const double desiredDist, const double desiredVolt, vector *p
 
     double startingVolt = get_move_voltage();
     double currVolt = startingVolt;
+    std::cout << "Martin is a aaaa" << std::endl;
     while (abs(currDist) < abs(desiredDist)) {
+        std::cout << "Martin is bbbbbbbbb" << std::endl;
         if (abs(currDist) < abs(desiredDist) / 4)
             currVolt += (desiredVolt - startingVolt) / (abs(desiredDist) / 4);
         else if (abs(currDist) < abs(desiredDist) * 3/4)
-            currVolt = currVolt;
+            currVolt = desiredVolt;
         else
-            currVolt -= (desiredVolt - startingVolt) / (abs(desiredDist) / 4)
+            currVolt -= (desiredVolt - startingVolt) / (abs(desiredDist) / 4);
         
         if (pCenter->desiredHeading > 180)
-            move(volt + PID(get_heading(), pCenter->desiredHeading-360, 1.5, 0.01, 2, prevErrorHeading, integralHeading), 
-                volt - PID(get_heading(), pCenter->desiredHeading-360, 1.5, 0.01, 2, prevErrorHeading, integralHeading));
+            move(currVolt + PID(get_heading(), pCenter->desiredHeading-360, 1.5, 0.01, 2, prevErrorHeading, integralHeading), 
+                currVolt - PID(get_heading(), pCenter->desiredHeading-360, 1.5, 0.01, 2, prevErrorHeading, integralHeading));
         else
-            move(volt + PID(get_heading(), pCenter->desiredHeading, 1.5, 0.01, 2, prevErrorHeading, integralHeading), 
-                volt - PID(get_heading(), pCenter->desiredHeading, 1.5, 0.01, 2, prevErrorHeading, integralHeading));
+            move(currVolt + PID(get_heading(), pCenter->desiredHeading, 1.5, 0.01, 2, prevErrorHeading, integralHeading), 
+                currVolt - PID(get_heading(), pCenter->desiredHeading, 1.5, 0.01, 2, prevErrorHeading, integralHeading));
 
         currDist += (leftMidMotor.get_position()-prevLeftPos + rightMidMotor.get_position()-prevRightPos)/2 
-                    * motorToWheelRatio/360*(M_PI*wheelDiam);
+                    * wheelToMotorRatio/360*(M_PI*wheelDiam);
         
         prevLeftPos = leftMidMotor.get_position(), prevRightPos = rightMidMotor.get_position();
+        pCenter->heading = imu_sensor.get_heading();
         pros::delay(15);
+
     }
-    if (stopType == MOTOR_BRAKE_BRAKE)
-        move(stopType, stopType);
+    std::cout << "Martin is" << std::endl;
     pros::delay(200);
+    std::cout << imu_sensor.get_heading() << std::endl;
     pCenter->heading = imu_sensor.get_heading();
+    move(stopType, stopType);
 }
 
 // move at a constant speed
@@ -157,7 +162,7 @@ void move_straight(const double desiredDist, const int volt, vector *pCenter, de
                 volt - PID(get_heading(), pCenter->desiredHeading, 0.9, 0.01, 1, prevErrorHeading, integralHeading));
         
         currDist += (leftMidMotor.get_position()-prevLeftPos + rightMidMotor.get_position()-prevRightPos)/2 
-                    * motorToWheelRatio/360*(M_PI*wheelDiam);
+                    * wheelToMotorRatio/360*(M_PI*wheelDiam);
         
         prevLeftPos = leftMidMotor.get_position(), prevRightPos = rightMidMotor.get_position();
         pros::delay(15);

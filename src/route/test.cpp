@@ -9,13 +9,12 @@ using namespace pros;
 
  void test() {
 //     // initial setup
+     setup_robot();
      vector center = {};
           pros::Task track_position(odometry2, &center);
-
      //move(50, 50);
-     turn(-40, 40, 270, &center, false);
-     std::cout << "Hi";
-     turn(20, -20, 270, &center);
+     move_straight(48.0, 100, &center);
+
      track_position.remove();
 
 

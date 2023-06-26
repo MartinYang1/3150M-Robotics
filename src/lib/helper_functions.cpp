@@ -12,7 +12,7 @@
 #include <math.h>
 
 const double wheelDiam = 3.25;
-const double motorToWheelRatio = 3 / 5.0 / 0.8;
+const double wheelToMotorRatio = 5.0 / 3 / 0.8;
 const double robotWidth = 12;
 
 inline void reset_drive_train() {
@@ -41,7 +41,7 @@ void setup_robot() {
  */
 double get_dist_travelled() {
     double degreesTravelled = (leftBackMotor.get_position() + rightBackMotor.get_position()) / 2;
-    return degreesTravelled * motorToWheelRatio / 360 * (M_PI*wheelDiam);
+    return degreesTravelled * wheelToMotorRatio / 360 * (M_PI*wheelDiam);
 }
 
 /** Gets the heading of the robot from its gyro sensor
@@ -65,7 +65,7 @@ double get_heading() {
  */
 double get_move_speed() {
     return (leftBackMotor.get_actual_velocity() + rightBackMotor.get_actual_velocity()
-            + leftFrontMotor.get_actual_velocity() + rightFrontMotor.get_actual_velocity())/4 * motorToWheelRatio;
+            + leftFrontMotor.get_actual_velocity() + rightFrontMotor.get_actual_velocity())/4 * wheelToMotorRatio;
 }
 
 /** Gets the voltage that the drive train motors are running at
@@ -117,12 +117,12 @@ void odometry2(void* param) {
     vector *pCenter = static_cast<vector*>(param);
     double L, R, deltaX, deltaY, alpha, hypotenuse;
     while (true) {
-        L = leftBackMotor.get_position() * motorToWheelRatio / 360 * (M_PI*wheelDiam);
-        R = rightBackMotor.get_position() * motorToWheelRatio / 360 * (M_PI*wheelDiam);
-        if (L==R) {
+        L = leftBackMotor.get_position() * wheelToMotorRatio / 360 * (M_PI*wheelDiam);
+        R = rightBackMotor.get_position() * wheelToMotorRatio / 360 * (M_PI*wheelDiam);
+        if (pCenter->heading == 0) {
             deltaY = L * cos(pCenter->heading) - pCenter->y; deltaX = R * sin(pCenter->heading)-pCenter->x;
             pCenter->x += deltaX; pCenter->y += deltaY;
-            master.print(0, 0, "%f", pCenter->y);
+            //std::cout << L * cos(pCenter->heading) << " " << R * sin(pCenter->heading) << std::endl;
         }
         else {
             // the angle turned
@@ -133,7 +133,7 @@ void odometry2(void* param) {
             deltaX = hypotenuse * sin(pCenter->heading + alpha/2) - pCenter->x;
 
             pCenter->x += deltaX; pCenter->y += deltaY;
-            master.print(0, 0, "%f", pCenter->y);
+            std::cout << alpha << " " << hypotenuse << std::endl;
         }
         pros::delay(10);
     }

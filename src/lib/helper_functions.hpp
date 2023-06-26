@@ -4,7 +4,7 @@
 #include "movement.hpp"
 
 extern const double wheelDiam;    // the diameter of the wheels of the drive train
-extern const double motorToWheelRatio;    // the gear ratio of the motor to the drive train wheel
+extern const double wheelToMotorRatio;    // the gear ratio of the motor to the drive train wheel
 extern const double robotWidth;
 
 extern double get_dist_travelled();
