@@ -42,6 +42,7 @@ void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, 
                         baseRightVolt - PID(currAngle, desiredAngle, 0.6, 0, 0, prevErrorHeading, integralHeading));
                 
                 pros::delay(15);
+                pCentre->heading = imu_sensor.get_heading();
             }
         }
         else if (currAngle > desiredAngle) {
@@ -58,6 +59,7 @@ void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, 
                 
                 prevAngle = imu_sensor.get_heading();  
                 pros::delay(15);
+                pCentre->heading = imu_sensor.get_heading();
             }
         }
     }
@@ -76,6 +78,7 @@ void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, 
                 
                 prevAngle = imu_sensor.get_heading();
                 pros::delay(15);
+                pCentre->heading = imu_sensor.get_heading();
             }
         }
         else if (currAngle < 360 && currAngle > desiredAngle) {
@@ -88,6 +91,7 @@ void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, 
                         baseRightVolt - PID(currAngle, desiredAngle, 0.5, 0, 0, prevErrorHeading, integralHeading));
                 
                 pros::delay(15);
+                pCentre->heading = imu_sensor.get_heading();
             }
         }
     }
@@ -114,9 +118,8 @@ void move_straight(const double desiredDist, const double desiredVolt, vector *p
 
     double startingVolt = get_move_voltage();
     double currVolt = startingVolt;
-    std::cout << "Martin is a aaaa" << std::endl;
     while (abs(currDist) < abs(desiredDist)) {
-        std::cout << "Martin is bbbbbbbbb" << std::endl;
+        std::cout << "gyro val =" << std::endl;
         if (abs(currDist) < abs(desiredDist) / 4)
             currVolt += (desiredVolt - startingVolt) / (abs(desiredDist) / 4);
         else if (abs(currDist) < abs(desiredDist) * 3/4)
@@ -136,12 +139,14 @@ void move_straight(const double desiredDist, const double desiredVolt, vector *p
         
         prevLeftPos = leftMidMotor.get_position(), prevRightPos = rightMidMotor.get_position();
         pCenter->heading = imu_sensor.get_heading();
+        std::cout << pCenter->heading <<std::endl;
+        //master.print(0, 0, "hello");
+
         pros::delay(15);
 
     }
-    std::cout << "Martin is" << std::endl;
+    master.print(0, 0, "voltage: %f", leftBackMotor.get_voltage());
     pros::delay(200);
-    std::cout << imu_sensor.get_heading() << std::endl;
     pCenter->heading = imu_sensor.get_heading();
     move(stopType, stopType);
 }

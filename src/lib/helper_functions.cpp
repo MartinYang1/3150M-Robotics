@@ -115,26 +115,26 @@ void stopwatch(void *param) {
 */
 void odometry2(void* param) {
     vector *pCenter = static_cast<vector*>(param);
-    double L, R, deltaX, deltaY, alpha, hypotenuse;
+    double L, R, deltaX, deltaY, alpha, hypotenuse, diffL, diffR, diff;
+    double preL = 0;
+    double preR = 0;
     while (true) {
         L = leftBackMotor.get_position() * wheelToMotorRatio / 360 * (M_PI*wheelDiam);
         R = rightBackMotor.get_position() * wheelToMotorRatio / 360 * (M_PI*wheelDiam);
-        if (pCenter->heading == 0) {
-            deltaY = L * cos(pCenter->heading) - pCenter->y; deltaX = R * sin(pCenter->heading)-pCenter->x;
-            pCenter->x += deltaX; pCenter->y += deltaY;
-            //std::cout << L * cos(pCenter->heading) << " " << R * sin(pCenter->heading) << std::endl;
-        }
-        else {
-            // the angle turned
-            alpha = pCenter-> heading;
-            hypotenuse = 2 * (L/alpha + robotWidth/2) * sin(alpha/2);
 
-            deltaY = hypotenuse * cos(pCenter->heading + alpha/2) - pCenter->y;
-            deltaX = hypotenuse * sin(pCenter->heading + alpha/2) - pCenter->x;
+        diffL = L - preL;
+        diffR = R - preR;
 
-            pCenter->x += deltaX; pCenter->y += deltaY;
-            std::cout << alpha << " " << hypotenuse << std::endl;
-        }
+        diff = (diffL = diffR) / 2;
+
+        deltaY = diff * cos(pCenter->heading); deltaX = diff * sin(pCenter->heading);
+        pCenter->x += deltaX; pCenter->y += deltaY;
+        //master.print(0, 0, "x: %f, y: %f", pCenter->x, pCenter->y);
+        //master.print(0, 0, "Heading: %f", pCenter->heading);
+        //std::cout << L * cos(pCenter->heading) << " " << R * sin(pCenter->heading) << std::endl;
+
+        preR = R;
+        preL = L;
         pros::delay(10);
     }
 }
