@@ -11,11 +11,12 @@ using namespace pros;
 //     // initial setup
      setup_robot();
      vector center = {};
-          pros::Task track_position(odometry2, &center);
+          pros::Task track_position(odometry, &center);
      //move(50, 50);
-     move_straight(48.0, 30, &center);
-     pros::delay(500);
-     move_straight(-48.0, -100, &center);
+     move_straight(48.0, 127, &center);
+     // pros::delay(500);
+     // move_straight(-48.0, -100, &center);
+     
 
      track_position.remove();
 

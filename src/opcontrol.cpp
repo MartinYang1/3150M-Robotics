@@ -7,7 +7,7 @@
 
 void opcontrol() {
          vector center = {};
-          pros::Task track_position(odometry2, &center);
+          pros::Task track_position(odometry, &center);
     unsigned shootingSpeed = 2000;
     pros::Task changeFlywheelSpeed(regulateFlywheel, &shootingSpeed);
 

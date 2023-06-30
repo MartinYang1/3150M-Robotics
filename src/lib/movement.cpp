@@ -118,14 +118,20 @@ void move_straight(const double desiredDist, const double desiredVolt, vector *p
 
     double startingVolt = get_move_voltage();
     double currVolt = startingVolt;
+    bool slowDown = false;
     while (abs(currDist) < abs(desiredDist)) {
-        std::cout << "gyro val =" << std::endl;
         if (abs(currDist) < abs(desiredDist) / 4)
             currVolt += (desiredVolt - startingVolt) / (abs(desiredDist) / 4);
         else if (abs(currDist) < abs(desiredDist) * 3/4)
             currVolt = desiredVolt;
-        else
+        else {
+            // slowDown = true;
+            // currVolt = 0;
             currVolt -= (desiredVolt - startingVolt) / (abs(desiredDist) / 4);
+        }
+        
+        // if (slowDown)
+        //     currVolt -= (desiredVolt - startingVolt) / (abs(desiredDist) / 4);
         
         if (pCenter->desiredHeading > 180)
             move(currVolt + PID(get_heading(), pCenter->desiredHeading-360, 1.5, 0.01, 2, prevErrorHeading, integralHeading), 
@@ -140,7 +146,6 @@ void move_straight(const double desiredDist, const double desiredVolt, vector *p
         prevLeftPos = leftMidMotor.get_position(), prevRightPos = rightMidMotor.get_position();
         pCenter->heading = imu_sensor.get_heading();
         std::cout << pCenter->heading <<std::endl;
-        //master.print(0, 0, "hello");
 
         pros::delay(15);
 
@@ -192,4 +197,16 @@ void move_straight(const float time, const int volt) {
     }
     track_time.remove();
     move(MOTOR_BRAKE_HOLD, MOTOR_BRAKE_HOLD);
+}
+
+void moveToPoint(int volt, point POI, vector *pCenter){
+    double relativeX = POI.x - pCenter->x, relativeY = POI.y - pCenter->y;
+    double relativeAngle = tan(relativeX / relativeY);
+
+    turn(volt, -volt, relativeAngle, pCenter);
+
+    double distance = sqrt(pow(relativeX, 2) + pow(relativeY, 2));
+    move_straight(distance, volt*1.5, pCenter);
+
+    turn(volt, -volt, POI.heading, pCenter);
 }

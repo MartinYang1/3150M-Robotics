@@ -113,7 +113,7 @@ void stopwatch(void *param) {
  * 
  * @param param the pointer to the vector data structure for the robot
 */
-void odometry2(void* param) {
+void odometry(void* param) {
     vector *pCenter = static_cast<vector*>(param);
     double L, R, deltaX, deltaY, alpha, hypotenuse, diffL, diffR, diff;
     double preL = 0;
@@ -138,22 +138,3 @@ void odometry2(void* param) {
         pros::delay(10);
     }
 }
-
-// void odometry(void* param) {
-//     vector *pCenter = static_cast<vector*>(param);
-//     double C, deltaX, deltaY, alpha;
-//     while (true) {
-//         C = centerMotor.get_position() = motorToWheelRatio/360 * (M_PI*wheelDiam);
-
-//         // the angle turned
-//         alpha = pCenter-> heading;
-
-//         deltaY = C * sin(pCenter->heading + alpha/2) - pCenter->y;
-//         deltaX = C * cos(pCenter->heading + alpha/2) - pCenter->x;
-
-//         pCenter->x += deltaX; pCenter->y += deltaY;
-//         std::cout << pCenter->x << "\t" << pCenter->y;
-
-//         pros::delay(10);
-//     }
-// }

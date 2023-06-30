@@ -20,7 +20,7 @@ pros::Motor flywheel(90, MOTOR_GEAR_RED);
 
 // sensors
 pros::Vision vision_sensor(90);
-pros::Imu imu_sensor(4);
+pros::Imu imu_sensor(6);
 pros::Optical optical_sensor(90);
 
 // pneumatics pistons
