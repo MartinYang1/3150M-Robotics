@@ -15,12 +15,11 @@ struct point {
 
 extern void move(const int leftVolt, const int rightVolt);
 extern void move_straight(const double desiredDist, vector *pCenter, decltype(MOTOR_BRAKE_BRAKE) stopType = MOTOR_BRAKE_BRAKE);
-extern void move_straight(const double desiredDist, const int volt, vector *pCenter, decltype(MOTOR_BRAKE_BRAKE) stopType = MOTOR_BRAKE_BRAKE);
 extern void move_straight(const float time, const int volt);
 extern void move_straight(const int volt, vector *pCenter);
 
 extern void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, vector *pCentre, bool correct = true);
 
-extern void moveToPoint(int volt, point POI, vector *pCenter);
+extern void moveToPoint(double x, double y, double heading, vector *pCenter);
 
 #endif
