@@ -182,15 +182,14 @@ void move_straight(const float time, const int volt) {
 
 void moveToPoint(double x, double y, double heading, vector *pCenter){
     double relativeX = x - pCenter->x, relativeY = y - pCenter->y;
-    double relativeAngle = tan(relativeX / relativeY) * 180 / 3.14159;
-            std::cout <<  tan(relativeX / relativeY) * 180 / 3.14159 << " " << tan(relativeX / relativeY) << std::endl;
-
-    if (relativeAngle != 0) {
+    if (relativeX != 0) {
+        double relativeAngle = atan(relativeY / relativeX) * 180 / 3.14159;
         if (relativeAngle < 0) relativeAngle = 360 - relativeAngle;
 
         int leftTurnVolt = (relativeAngle > 0) ? 20: -20;
         turn(leftTurnVolt, -leftTurnVolt, relativeAngle, pCenter, false);
     }
+
     double distance = sqrt(pow(relativeX, 2) + pow(relativeY, 2));
     move_straight(distance, pCenter);
     // if (heading != NULL)
