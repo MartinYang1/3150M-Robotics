@@ -11,14 +11,15 @@ using namespace pros;
 //     // initial setup
      setup_robot();
      vector center = {};
-          pros::Task track_position(odometry, &center);
+     pros::Task track_position(odometry, &center);
      //move(50, 50);
      // move_straight(-48.0, &center);     
      // pros::delay(2000);
      // move_straight(48.0, &center);
 
-     //moveToPoint(0, 10, NULL, &center);
-     moveToPoint(30, 30, NULL, &center);
+     moveToPoint(-30, -30, 0, &center);
+     pros::delay(200);
+     moveToPoint(0, 0, 0, &center);
      //   turn(-20, 20, 270, &center, false);
      // std::cout << "Hi";
      // turn(20, -20, 90, &center);

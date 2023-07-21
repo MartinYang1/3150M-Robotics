@@ -12,7 +12,7 @@
 #include <math.h>
 
 const double wheelDiam = 3.25;
-const double wheelToMotorRatio = 5.0 / 3 / 0.8;
+const double wheelToMotorRatio = 3.0 / 5 / 0.8;
 const double robotWidth = 12;
 
 inline void reset_drive_train() {
@@ -129,12 +129,12 @@ void odometry(void* param) {
 
         deltaY = diff * cos(pCenter->heading); deltaX = diff * sin(pCenter->heading);
         pCenter->x += deltaX; pCenter->y += deltaY;
-        //master.print(0, 0, "x: %f, y: %f", pCenter->x, pCenter->y);
+        master.print(0, 0, "x: %f, y: %f", pCenter->x, pCenter->y);
         //master.print(0, 0, "Heading: %f", pCenter->heading);
         //std::cout << L * cos(pCenter->heading) << " " << R * sin(pCenter->heading) << std::endl;
 
+        pros::delay(10);
         preR = R;
         preL = L;
-        pros::delay(10);
     }
 }

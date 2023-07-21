@@ -108,3 +108,11 @@ void shoot(double desiredSpeed, const unsigned numDiscs) {
         flywheel_indexer.set_value(0);
     }
 }
+void catapult(int time)
+    {
+        cata_right=127;
+        cata_left=127;
+        pros::delay(time);
+        cata_right=0;
+        cata_left=0;
+    }

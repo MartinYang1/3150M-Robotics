@@ -97,6 +97,10 @@ void turn(const int baseLeftVolt, const int baseRightVolt, double desiredAngle, 
     }
     if (correct) {
         turn(-baseLeftVolt*0.5, -baseRightVolt*0.5, pCentre->desiredHeading, pCentre, false);
+        move(baseLeftVolt * 0.5, baseRightVolt);
+    }
+    else{
+        move(-baseLeftVolt * 0.5, -baseRightVolt * 0.5);
     }
     move(MOTOR_BRAKE_BRAKE, MOTOR_BRAKE_BRAKE);
     pros::delay(100);
@@ -169,7 +173,7 @@ void move_straight(const double desiredDist, const int volt, vector *pCenter, de
  * @param time the time to travel for, in seconds
  * @param volt the voltage for the drive train motors
 */
-void move_straight(const float time, const int volt) {
+void move_straight(const float time, const double volt) {
     static unsigned timeElapsed = 0;    // in milliseconds
     pros::Task track_time(stopwatch, &timeElapsed);
     while (timeElapsed < time * 1000) {
@@ -187,7 +191,15 @@ void moveToPoint(double x, double y, double heading, vector *pCenter){
         if (relativeAngle < 0) relativeAngle = 360 - relativeAngle;
 
         int leftTurnVolt = (relativeAngle > 0) ? 20: -20;
-        turn(leftTurnVolt, -leftTurnVolt, relativeAngle, pCenter, false);
+
+        if (relativeX > 0 && relativeY > 0)
+            turn(leftTurnVolt, -leftTurnVolt, 90 - relativeAngle, pCenter, false);
+        else if (relativeX < 0 && relativeY > 0)
+            turn(leftTurnVolt, -leftTurnVolt, 270 - relativeAngle, pCenter, false);
+        else if (relativeX < 0 && relativeY < 0)
+            turn(leftTurnVolt, -leftTurnVolt, 270 - relativeAngle, pCenter, false);
+        else 
+            turn(leftTurnVolt, -leftTurnVolt, 90 - relativeAngle, pCenter, false);
     }
 
     double distance = sqrt(pow(relativeX, 2) + pow(relativeY, 2));

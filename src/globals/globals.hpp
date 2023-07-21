@@ -16,8 +16,11 @@ extern pros::Motor leftMidMotor;
 extern pros::Motor rightMidMotor;
 
 // disc mechanisms
-extern pros::Motor flywheel;
+extern pros::Motor cata_right;
+extern pros::Motor cata_left;
 extern pros::Motor intake;
+extern pros::Motor flywheel;
+
 extern pros::Motor &roller;
 extern pros::Motor &indexer;
 
@@ -30,6 +33,7 @@ extern pros::Optical optical_sensor;
 extern pros::ADIDigitalOut expander1_piston;
 extern pros::ADIDigitalOut expander2_piston;
 extern pros::ADIDigitalOut flywheel_indexer;
+extern pros::ADIDigitalOut intake_flap;
 
 extern int autonSelection;
 

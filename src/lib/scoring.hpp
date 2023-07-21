@@ -10,5 +10,7 @@ extern const unsigned turn_roller(const int rate);
 extern void setupFlywheel(void *param);
 extern void regulateFlywheel(void *param);
 extern void shoot(double desiredSpeed, const unsigned numDiscs);
+extern void catapult(int time);
+//extern void intake_flap(int state);
 
 #endif

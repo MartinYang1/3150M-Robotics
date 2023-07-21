@@ -1,59 +1,69 @@
-// #include "../include/main.h"
-// #include "../globals/globals.hpp"
-// #include "../lib/movement.hpp"
-// #include "../lib/helper_functions.hpp"
-// #include "../lib/scoring.hpp"
-// #include "pros/vision.h"
+#include "../include/main.h"
+#include "../globals/globals.hpp"
+#include "../lib/movement.hpp"
+#include "../lib/helper_functions.hpp"
+#include "../lib/scoring.hpp"
+#include "pros/vision.h"
 
-// using namespace pros;
+ using namespace pros;
 
- void solo_awp() {
-//     // initial setup
-//     vector center = {};
+  void solo_awp() {
+    // initial setup
+    vector center = {};
+    unsigned timeElapsed = 0;
+    pros::Task track_time(stopwatch, &timeElapsed);
+    setup_robot();
+    pros::Task track_position(odometry, &center);
+    move_straight(21.0, 50, &center);
+    turn(40,-40,70, &center, true);
+    move_straight(13.5, 50, &center);
+    intake_flap.set_value(1); //raise intake
+    //shoot triball
+    pros::delay(400);
+    catapult(400);
+    //turn to face match load zone
+    intake_flap.set_value(0); //raise intake
+    turn(-40,40,235, &center, true);
+    move_straight(41.0, 50, &center);
+    intake_flap.set_value(1);//lower intake
+    pros::delay(500);
+    move_straight(-8.0,-50,&center);
+    intake_flap.set_value(0); //raise intake
+    turn(-40,40,135,&center);
+    move_straight(20.0, 50, &center);
+    turn(-40,40,90,&center);
+    move_straight(18.0, 50, &center);
 
-//     unsigned timeElapsed = 0;
-//     unsigned desiredSpeed = 2770;
-//     pros::Task track_time(stopwatch, &timeElapsed);
-//     pros::Task regulate_shooting_speed(regulateFlywheel, &desiredSpeed);
-//     setup_robot();
-
-//     pros::Task track_position(odometry, &center);
+    /*
+    moveToPoint(0,22,-22,&center);
+    //turn(30,-30,75, &center);
+    moveToPoint(27,18.5,-22,&center);
+    intake_flap.set_value(1);
+    pros::delay(300);
+    cata_right=127;
+    cata_left=127;
+    pros::delay(400);
+    cata_right=0;
+    cata_left=0;
+    intake_flap.set_value(0);
+    //pickup match loads
+    moveToPoint(-26,-32.5, -22,&center);
     
-//     // shoot preloads and turn roller
-//     move_straight(51, &center); turn_roller(100); delay(400);
-//     move_straight(-3.4, &center);
-//     turn(-25, 25, 355, &center);
-//     delay(30);
-//     pros::delay(2500);
-//     while (desiredSpeed != INT16_MAX) {
-//         delay(15);
-//     }
-//     desiredSpeed = 2520;
-//     pros::delay(250);
-//     shoot(1000);
-//     //pick up next 3 discs and shoot them
-//     desiredSpeed = 2400; 
-//     intake = 127;
-//     turn(-25, 25, 239, &center);
-//     move_straight(51,58, &center, MOTOR_BRAKE_COAST);
-//     pros::delay(180);
-    
-//     turn(23,-23, 313, &center);
-//     shoot(1050);
-//     intake = 127;
-//     turn(-23,23, 224,&center);
-//     pros::delay(40);
-    
-//     // pick up stack of 3 discs and shoot them (maybe)
- 
-//     move_straight(68.0, 64.0, &center);
-//     turn(35,-35, 261, &center);
-//     pros::delay(80);
-//     move_straight(60, &center); turn_roller(100);
+    intake_flap.set_value(1);
+    pros::delay(500);
+    move_straight(1.85, -40);
+    intake_flap.set_value(0);
+    turn(-40,40,133,&center,false);
 
-
-//     track_time.remove();
-//     regulate_shooting_speed.remove();
-//     track_position.remove();
-//     master.print(0, 0, "%d", timeElapsed);
- }
+    move_straight(2.8, 50);
+    move(10,10);
+    intake_flap.set_value(1);
+    pros::delay(300);
+    */
+    //shoot
+    //moveToPoint(-20,5,-22,&center);
+    //intake
+    //back up
+    //raise intake
+    //
+   }
