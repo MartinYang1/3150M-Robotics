@@ -41,7 +41,7 @@ void taskFunctions(){
 
 				// Print the currently-selected autonomous program to the controller
 				int automas = std::floor(autoSwitches1.get_value()); // Get index of current autonomous option
-				autoTitles currentMode = static_cast<autoTitles>(automas); // Store autonomous option with 'AutoTitles' data type
+				//autoTitles currentMode = static_cast<autoTitles>(automas); // Store autonomous option with 'AutoTitles' data type
 				printRow(1,stringify(currentMode)); // Print out the name of the autonomous 
 
 				
@@ -71,12 +71,8 @@ void initialize() {
 	runTasks.suspend(); // Turn off task for now
 	shooterMtr.set_voltage(0); // Reset Flywheel voltage output
 
-	// Set up Potentiometer
-	autoSwitches1.set_max(8.9);
-	autoSwitches1.set_min(1);
-	autoSwitches1.set_direction(false);
-
 	initializeGeneral(); // Callibrate Sensors
+	selectorInit();
 }
 
 
@@ -108,19 +104,19 @@ void autonomous() {
 	switch (autonSelection)
 	{
 		case S_RED5: //autoroute 2
-			test();
+			Awp();
 			break;
 		case S_BLUE5:
-			test();
+			Awp();
 			break;
 		case S_RED7: S_BLUE7:
-			solo_awp(); break;
+			Awp(); break;
 		case S_RED8: S_BLUE8:
-			prog_skills(); break;
+			Awp(); break;
 		case B_RED3: B_BLUE3:
-			close_a(); break;
+			Awp(); break;
 		case B_RED6_C: B_BLUE6_C:
-			far_auto(); break;
+			Awp(); break;
 
 	}
   	// Check through each possible autonomous to find the correct one

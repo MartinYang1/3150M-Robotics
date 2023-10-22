@@ -31,82 +31,73 @@ We have two alternative Solo AWP Programs.
 -----------------------------------------------------------------------------*/
 
 void Awp(){
-
-  setFlywheel(665); // Prepare flywheel to score
-  disableAutoIntake();
-
-  // ----- CLAIM BOTTOM ROLLER ----- //
-  setDrive(-40,0); // Drive into roller
-  pros::delay(100); // Wait for robot to reach roller
-  quickRollerShort(-40,0); // Run Roller Claim function
-
   // ----- SCORE PRELOADS ----- //
-  chassis.drive_pid(7,120,false); // Drive away from roller
+  chassis.drive_pid(50.0,100); // Drive away from roller
   chassis.turn_pid(45,120); // Turn away from roller
   chassis.drive_pid(8.5,120); // Drive to a scoring position
+  chassis.turn_pid(350,120);
+  // disableAutoIntake();
+  // chassis.turn_pid(-15-isRightSet*3,120); // Turn towards the goal
 
-  disableAutoIntake();
-  chassis.turn_pid(-15-isRightSet*3,120); // Turn towards the goal
+  // pros::delay(400);
 
-  pros::delay(400);
-
-  hailMary(2,NO_DROPOFF); // Score preloads
+  // hailMary(2,NO_DROPOFF); // Score preloads
   
-  setFlywheel(550);
+  // setFlywheel(550);
 
-  // ----- PICK UP DISCS ----- //
-  chassis.turn_pid(45, 120); // Turn towards stack of discs
-  enableAutoIntake();
-
-  setRoller(127); // Prepare lift to pick of discs
-
-    chassis.set_pid_constants(&chassis.headingPID, 11, 0, 65, 0); // Prevent whiplash from turn
-    chassis.set_drive_pid(39, 140); // Drive into discs
-    chassis.wait_until(6); // wait until robot has driven 8 inches
-    
-    chassis.set_max_speed(22); // Slow down to collect stack of discs
-    chassis.wait_drive(); // Wait for robot to complete drive movement
-    chassis.set_pid_constants(&chassis.headingPID, 11, 0, 20, 0); // Return heading to default state
-
-
-  // chassis.drive_pid(39, 40); // Drive into discs
-
-  // ----- SCORE DISCS ----- //
-  disableAutoIntake();
-  chassis.turn_pid(-35-isRightSet*2,120); // Turn towards goal
-
-  hailMary(3,NO_DROPOFF); // Score discs
-
-  setFlywheel(568);
-  setRoller(0);
-
-  // ----- PICK UP DISCS ----- //
-  chassis.turn_pid(45, 120); // Turn towards row of discs
+  // // ----- PICK UP DISCS ----- //
+  // chassis.turn_pid(45, 120); // Turn towards stack of discs
   // enableAutoIntake();
-  setRoller(127);
 
-  // Make the drivetrain settle quicker
-  chassis.set_pid_constants(&chassis.headingPID, 11, 0, 65, 0);
-  chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
+  // setRoller(127); // Prepare lift to pick of discs
 
-  chassis.drive_pid(79, 70); // Move through discs
-  chassis.set_pid_constants(&chassis.headingPID, 11, 0, 20, 0);
+  //   chassis.set_pid_constants(&chassis.headingPID, 11, 0, 65, 0); // Prevent whiplash from turn
+  //   chassis.set_drive_pid(39, 140); // Drive into discs
+  //   chassis.wait_until(6); // wait until robot has driven 8 inches
+    
+  //   chassis.set_max_speed(22); // Slow down to collect stack of discs
+  //   chassis.wait_drive(); // Wait for robot to complete drive movement
+  //   chassis.set_pid_constants(&chassis.headingPID, 11, 0, 20, 0); // Return heading to default state
+
+
+  // // chassis.drive_pid(39, 40); // Drive into discs
+
+  // // ----- SCORE DISCS ----- //
+  // disableAutoIntake();
+  // chassis.turn_pid(-35-isRightSet*2,120); // Turn towards goal
+
+  // hailMary(3,NO_DROPOFF); // Score discs
+
+  // setFlywheel(568);
+  // setRoller(0);
+
+  // // ----- PICK UP DISCS ----- //
+  // chassis.turn_pid(45, 120); // Turn towards row of discs
+  // // enableAutoIntake();
+  // setRoller(127);
+
+  // // Make the drivetrain settle quicker
+  // chassis.set_pid_constants(&chassis.headingPID, 11, 0, 65, 0);
+  // chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
+
+  // chassis.drive_pid(79, 70); // Move through discs
+  // chassis.set_pid_constants(&chassis.headingPID, 11, 0, 20, 0);
   
-  disableAutoIntake();
+  // disableAutoIntake();
 
-  // ----- CLAIM TOP ROLLER ----- //
-  chassis.turn_pid(-90,120); // Turn towards roller
+  // // ----- CLAIM TOP ROLLER ----- //
+  // chassis.turn_pid(-90,120); // Turn towards roller
   
-  setRoller(0); // Stop lift
-  chassis.set_mode(ez::DISABLE);
+  // setRoller(0); // Stop lift
+  // chassis.set_mode(ez::DISABLE);
 
-  quickRoller(0,-60,450,-50); // Run Roller Claim function
+  // quickRoller(0,-60,450,-50); // Run Roller Claim function
 
-  // ----- SCORE PRELOADS ----- //
-  chassis.drive_pid(12,120,false); // Drive away from roller
+  // // ----- SCORE PRELOADS ----- //
+  // chassis.drive_pid(12,120,false); // Drive away from roller
 
-  chassis.turn_pid(-77.2,120); // Turn towards goal
-  hailMary(3,NO_DROPOFF); // Score row of discs
+  // chassis.turn_pid(-77.2,120); // Turn towards goal
+  // hailMary(3,NO_DROPOFF); // Score row of discs
 
 }
 

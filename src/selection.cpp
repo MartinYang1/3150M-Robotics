@@ -1,10 +1,10 @@
 #include "main.h"
 #include "selection.h"
-#include "globals/globals.hpp"
+//#include "globals/globals.hpp"
 
 static const char *btnmMap[] = {"test", "solo AWP", "prog skills", "\n", "alliance auto close", 
 	"alliance auto far", "\n", "Do Nothing", ""};
-
+int autonSelection = SKILLS;
 
 
 lv_res_t redBtnmAction(lv_obj_t *btnm, const char *txt){

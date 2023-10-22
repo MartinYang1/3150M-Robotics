@@ -23,10 +23,10 @@ Uses the Controller input
 // Base Motor is disabled due to inetegration of EZ Template Commands
 Drive chassis(
   // EZ-Template Setup
-  {-3, -2, -5}, // Left Drivetrain Motor Ports
-  {7, 9, 10}, // Right Drivetrain Motor Ports
-  13, // IMU Port
-  3.25, // Drivetrain Wheel Diameter
+  {19, -18, -20}, // Left Drivetrain Motor Ports
+  {-12, 13, 11}, // Right Drivetrain Motor Ports
+  6, // IMU Port
+  2.75, // Drivetrain Wheel Diameter
   600, // Motor Cartridge
   1.3333333333, // External Drive Ratio
 

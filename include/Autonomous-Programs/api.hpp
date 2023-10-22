@@ -13,7 +13,7 @@
 
 // Autonomous Selector Options
 // These names are what display on the controller screen when checking the right slot
-enum autoTitles{ SKILLS=1, SKILLS_2=2, AWP=3, AWP_2=4, LEFT_SIDE=5, LEFT_SIDE_AUTO_STACK=6, RIGHT_SIDE=7, RIGHT_SIDE_AUTO_STACK=8};
+//enum autoTitles{ SKILLS=1, SKILLS_2=2, AWP=3, AWP_2=4, LEFT_SIDE=5, LEFT_SIDE_AUTO_STACK=6, RIGHT_SIDE=7, RIGHT_SIDE_AUTO_STACK=8};
 extern bool isRightSet;
 
 void Awp(); // Solo AWP
