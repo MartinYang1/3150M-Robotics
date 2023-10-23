@@ -32,10 +32,10 @@ We have two alternative Solo AWP Programs.
 
 void Awp(){
   // ----- SCORE PRELOADS ----- //
-  chassis.drive_pid(50.0,100); // Drive away from roller
-  chassis.turn_pid(45,120); // Turn away from roller
+  chassis.drive_pid(100.0,120); // Drive away from roller
+  chassis.turn_pid(45,80); // Turn away from roller
   chassis.drive_pid(8.5,120); // Drive to a scoring position
-  chassis.turn_pid(350,120);
+  // chassis.turn_pid(350,120);
   // disableAutoIntake();
   // chassis.turn_pid(-15-isRightSet*3,120); // Turn towards the goal
 
