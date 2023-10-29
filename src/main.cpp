@@ -1,6 +1,7 @@
 #include "main.h"
 #include "selection.h"
 #include "PotMgr/PotMgr.hpp"
+#include "globals.hpp"
 #include <iostream>
 #include <string>
 #define stringify( name ) #name
@@ -174,79 +175,65 @@ void autonomous() {
 //   }
 }
 
+void move(const int leftVolt, const int rightVolt){
+    leftFrontMotor = leftVolt; leftMidMotor = leftVolt; leftBackMotor = leftVolt;
+    rightFrontMotor = rightVolt; rightMidMotor = rightVolt; rightBackMotor = rightVolt;
+}
+
 // ---------------- DRIVER CONTROL ---------------- //
 // Robot is driven by a human
 // Run the robot based on joystick and button inputs
 // Display Odometry details
 void opcontrol() {
+    expander1_piston.set_value(0);
+    expander2_piston.set_value(0);
 
-	runTasks.resume(); // Enable useful tasks
+    flywheel_indexer.set_value(0);
+    int intake_state=1;
+    int flywheel_state=0;
+    bool shooterReady = false;
+    while (true) {
+        int power = master.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+        int turnRate = master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X);
+        move(power + turnRate, power - turnRate);
+        if(master.get_digital(DIGITAL_R1))
+        {
+            cata_right=127;
+            cata_left=127; // cata motors
+            move(MOTOR_BRAKE_HOLD, MOTOR_BRAKE_HOLD);
 
-	initializeDriver(); // Initialize Driver
+        }
+        else
+        {
+            cata_right=MOTOR_BRAKE_HOLD;
+            cata_left=MOTOR_BRAKE_HOLD;
+        }
+        if (master.get_digital(DIGITAL_Y) )
+        {
+            expander2_piston.set_value(1);
+        }
+        else if (master.get_digital(DIGITAL_A))
+        {
+            expander2_piston.set_value(0);
+        }
+        if (master.get_digital(DIGITAL_L1) )
+        {
+            intake_flap.set_value(0);
+        }
+        else if (master.get_digital(DIGITAL_L2) )
+        {
+            intake_flap.set_value(1);
+        }
 
-	disableAutoIntake();
+        if (master.get_digital(DIGITAL_UP) && master.get_digital(DIGITAL_DOWN) &&master.get_digital(DIGITAL_RIGHT) &&master.get_digital(DIGITAL_LEFT))
 
-	// ----- DEBUG COMMANDS (uncomment to use) ----- //
-	// enableCntrlDebug();
-	// enableAutoIntake();
-	// chassis.disable_odometry();
-	// chassis.odom.setPosition(0,0); 
-	// --------------------------------------------- //
-	
-	// ----- SKILLS DRIVER (uncomment to use) ----- //
-	// setFlywheel(425); // Start spinnign flywheel to match load
-	// pros::delay(1500); // Wait for flywheel to spin up
-	// hailMaryDrive(9,100); // Begin match loading
-	// if(false)
-	// -------------------------------------------- // 
-
-	// ----- SKILLS AUTONOMOUS (uncomment to use) ----- //
-	// chassis.enable_odometry();
-	// pros::Task runSkills(Skills);
-	// while(true){
-    // 	point2 driveJoystics=setDriveJoystics(); // Check controller input
-	//     if(fabs(driveJoystics.x)>0 || fabs(driveJoystics.y)>0){
-    //   		motorCoast();
-    //   		break;
-    // 	}
-	// 	pros::delay(10);
-	// }
-	// runSkills.suspend();
-	// runSkills.remove();
-	// if(false)
-	// ------------------------------------------------ //
-
-	// ----- Initialize Defector Pt.1 ----- //
-	setPiston("Deflector",UP); // Send piston upwards 
-	bool deflectorInit=false; // Determine if the deflector has been initialized
-	short deflectorInitTime=0; // Declare amount of time that has been elapsed in initialization
-
-
-	while (true) {
-		// ----- Initialize Deflector Pt.2 ----- //
-		// Ensures that the Deflector starts 
-		if(!deflectorInit){ // If the deflector has not been initialized
-			if(deflectorInitTime>150){
-				setPiston("Deflector",DOWN);
-				deflectorInit=true; 
-			}
-			deflectorInitTime+=10; // Add 10ms to initialization time
-		}
-
-		// ----- Drivetrain ----- //
-		setDriveMotors();
-
-		// ----- Delivery ----- //
-		setShooterMotor();
-
-		// ----- Intake/Lift/Roller ----- //
-		setRollerMotor();
-
-		// ----- Piston ----- // 
-		setPiston();
-
-		extraButtons(); // Run some testing buttons if the debug is enabled
-
-		pros::delay(10); // Wait 10ms for sensors to update
-	}
-} 
+        {
+            //deploy pistons
+        }
+        else
+        {
+            //don't deploy pistons
+        }
+        
+    }
+}
